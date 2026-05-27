@@ -399,4 +399,186 @@ Explain:
 9. Close Connection
 ```
 
-This order is easier because students see **working JDBC first**, then **dynamic input later**.
+Sir, after the 5 JDBC steps, explain these concepts in a rough classroom way:
+
+# 1. Statement vs PreparedStatement
+
+## Statement
+
+Syntax:
+
+```java id="6lhx8q"
+Statement st=con.createStatement();
+```
+
+Example:
+
+```java id="9jv7ej"
+st.executeUpdate(
+"insert into student values(101,'Mahesh','CSE')");
+```
+
+Explanation:
+
+> SQL query is written directly inside Java.
+
+Problems:
+
+* Less secure
+* SQL Injection possible
+* Not efficient for repeated queries
+
+---
+
+## PreparedStatement
+
+Syntax:
+
+```java id="o6x7rr"
+PreparedStatement ps=
+con.prepareStatement(
+"insert into student values(?,?,?)");
+```
+
+Example:
+
+```java id="quj7wa"
+ps.setInt(1,101);
+ps.setString(2,"Mahesh");
+ps.setString(3,"CSE");
+```
+
+Explanation:
+
+> Query is prepared first and values are inserted later.
+
+Advantages:
+
+* More secure
+* Faster
+* Avoids SQL injection
+* Easy for dynamic input
+
+Tell students:
+
+> "In real projects we mostly use PreparedStatement."
+
+---
+
+# 2. executeUpdate()
+
+Syntax:
+
+```java id="n61m7q"
+ps.executeUpdate();
+```
+
+Used for:
+
+```text id="k9s5k8"
+INSERT
+UPDATE
+DELETE
+CREATE
+ALTER
+DROP
+```
+
+Explanation:
+
+> Used when data changes in database.
+
+Examples:
+
+Insert:
+
+```java id="5fgj3m"
+String q=
+"insert into student values(101,'Mahesh','CSE')";
+```
+
+Update:
+
+```java id="prsgs4"
+String q=
+"update student set branch='ECE' where id=101";
+```
+
+Delete:
+
+```java id="9a9ye4"
+String q=
+"delete from student where id=101";
+```
+
+Execute:
+
+```java id="x5u0yu"
+ps.executeUpdate();
+```
+
+---
+
+# 3. executeQuery()
+
+Syntax:
+
+```java id="wwn56r"
+ResultSet rs=
+ps.executeQuery();
+```
+
+Used for:
+
+```text id="39v3dd"
+SELECT
+```
+
+Explanation:
+
+> Used to retrieve data from database.
+
+Example:
+
+```java id="slf0dm"
+String q="select * from student";
+
+PreparedStatement ps=
+con.prepareStatement(q);
+
+ResultSet rs=
+ps.executeQuery();
+
+while(rs.next())
+{
+System.out.println(
+rs.getInt(1)+" "+
+rs.getString(2)+" "+
+rs.getString(3));
+}
+```
+
+---
+
+# Simple table for board explanation
+
+```text id="6vpk0v"
+executeUpdate()            executeQuery()
+
+Insert                     Select
+Update
+Delete
+Create
+Alter
+Drop
+
+Returns int                Returns ResultSet
+Changes data               Retrieves data
+```
+
+---
+
+One easy line for students:
+
+> "If data changes → executeUpdate() ; If data displays → executeQuery()"
+
