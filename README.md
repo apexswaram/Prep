@@ -1,7 +1,7 @@
 # Prep
 
 
-# JDBC Class Flow 
+# JDBC 
 
 Draw this on the board:
 
